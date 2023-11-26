@@ -24,7 +24,7 @@ class TooList extends StatelessWidget {
         routes: {
           'landing_page': (context) => const LandingPage(),
           'signup_page': (context) => const SignUpPage(),
-          // 'login_page': (context) => const LoginPage(),
+          'login_page': (context) => const LoginPage(),
         });
   }
 }
