@@ -16,10 +16,9 @@ class TooList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'TooList App',
-        theme: ThemeData(
-          primarySwatch: primary,
-        ),
+        theme: ThemeData(primarySwatch: primary),
         home: const SplashScreen(),
         routes: {
           'landing_page': (context) => const LandingPage(),
