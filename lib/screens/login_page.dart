@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:toolist/utils/validator.dart';
-import 'package:toolist/utils/file_auth.dart';
+import 'package:toolist/utils/fire_auth.dart';
 
 import 'signup_page.dart';
 import 'profile_page.dart';
