@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter/services.dart';
-import 'package:toolist/screens/landing_page.dart';
+
+import '/screens/start_screen/landing_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const LandingPage()));
     });

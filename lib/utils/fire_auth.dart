@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FireAuth {
-  static Future<User?> registerAccount(
-      {required String name,
-      required String gender,
-      required String image,
-      required String email,
-      required String password}) async {
+  static Future<User?> registerAccount({
+    required String name,
+    required String image,
+    required String email,
+    required String password,
+  }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     User? user;
@@ -18,7 +18,6 @@ class FireAuth {
 
       user = userCredential.user;
       await user!.updateDisplayName(name);
-      await user.updatePhotoURL(image);
       await user.reload();
       user = auth.currentUser;
     } on FirebaseAuthException catch (e) {
@@ -40,7 +39,7 @@ class FireAuth {
     return user;
   }
 
-  static Future<User?> signInUsingEmailPassword(
+  static Future<User?> signInAccount(
       {required String email, required String password}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
@@ -62,6 +61,22 @@ class FireAuth {
     }
 
     return user;
+  }
+
+  static Future<User?> updateAccount(
+      {required String name,
+      required String image,
+      required String email}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? updatedUser;
+    updatedUser = auth.currentUser;
+
+    await updatedUser!.updatePhotoURL(image);
+    await updatedUser.updateEmail(image);
+    await updatedUser.updateDisplayName(image);
+    await updatedUser.reload();
+
+    return updatedUser;
   }
 
   static Future<User?> refreshUser(User user) async {
