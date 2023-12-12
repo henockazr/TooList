@@ -9,162 +9,244 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List data = [];
+  List todo = [];
+  List search_data = [];
+  List search_data_pre = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 40),
-            padding: const EdgeInsets.fromLTRB(43, 30, 43, 26),
-            decoration: ShapeDecoration(
-                color: const Color(0xFFEAF2FF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30))),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Halo, ',
-                      style: GoogleFonts.lato(
-                          color: Colors.black,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w300),
-                    ),
-                    Text(
-                      'Rendy Panglila',
-                      style: GoogleFonts.lato(
-                          color: Colors.black,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700),
-                    )
-                  ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 50.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 40.0),
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEAF2FF),
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                const SizedBox(height: 19),
-                Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Total Expenses',
-                          style: GoogleFonts.lato(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400),
+                          'Halo, ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
                         Text(
-                          'Rp 154.000',
-                          style: GoogleFonts.lato(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300),
-                        ),
+                          'Rendy Panglila',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
                       ],
                     ),
-                    const SizedBox(width: 32),
-                    Column(
+                    SizedBox(height: 19),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'To Dos Left',
-                          style: GoogleFonts.lato(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total Expenses',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
+                              'Rp 154.000',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          '5 Task',
-                          style: GoogleFonts.lato(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300),
+                        SizedBox(width: 32),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'To Dos Left',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
+                              '5 Task',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            )
+                          ],
                         )
                       ],
                     )
                   ],
-                )
-              ],
-            ),
-          ),
-          const SizedBox(height: 40),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              children: [
-                Text(
-                  "Today's Task",
-                  style: GoogleFonts.lato(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
                 ),
-                const SizedBox(height: 9),
-                Text('Saturday, 25 November 2023',
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Today's Task",
                     style: GoogleFonts.lato(
                       color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
                       height: 0,
-                    )),
-              ],
-            ),
-          ),
-          const SizedBox(height: 23),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    side: const BorderSide(
-                      width: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 9),
+                  Text('Saturday, 25 November 2023',
+                      style: GoogleFonts.lato(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        height: 0,
+                      )),
+                ],
+              ),
+              SizedBox(height: 23),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(18),
+                      side: const BorderSide(
+                        width: 2,
+                        color: Colors.black,
+                      ),
+                      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: () {},
+                    child: Row(
+                      children: [
+                        Text(
+                          'New To Do',
+                          style: GoogleFonts.inter(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const Icon(Icons.add, color: Colors.black)
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(18),
+                      side: const BorderSide(
+                        width: 2,
+                        color: Colors.black,
+                      ),
+                      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: () {
+                      // Implement logic for New Expenses button
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'New Expenses',
+                          style: GoogleFonts.inter(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const Icon(Icons.add, color: Colors.black)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'To Do List',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
                       color: Colors.black,
                     ),
-                    backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
                   ),
-                  onPressed: () async {},
-                  child: Row(
-                    children: [
-                      Text(
-                        'New To Do',
-                        style: GoogleFonts.inter(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      const Icon(Icons.add, color: Colors.black)
-                    ],
-                  )),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    side: const BorderSide(
-                      width: 2,
-                      color: Colors.black,
+                  TextButton(
+                    onPressed: () {
+                      // Implement functionality for the "More" button
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'More ',
+                          style: GoogleFonts.lato(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Icon(
+                          Icons.arrow_forward,
+                          size: 15,
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
-                    backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
                   ),
-                  onPressed: () async {},
-                  child: Row(
-                    children: [
-                      Text(
-                        'New Expenses',
-                        style: GoogleFonts.inter(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      const Icon(Icons.add, color: Colors.black)
-                    ],
-                  ))
+                ],
+              ),
+              SizedBox(height: 17),
+              Card(
+                elevation: 0,
+                child: Column(
+                  children: [
+                    Text(
+                      'TITLE',
+                      style: GoogleFonts.montserrat(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      'Desciption will be right here : Lorem ipsum dolor sit amet',
+                      style: GoogleFonts.lato(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                    )
+                  ],
+                ),
+              )
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
