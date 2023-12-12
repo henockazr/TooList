@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BudgetPage extends StatefulWidget {
-  const BudgetPage({super.key});
+class TodoPage extends StatefulWidget {
+  const TodoPage({super.key});
 
   @override
-  _BudgetPageState createState() => _BudgetPageState();
+  _TodoPageState createState() => _TodoPageState();
 }
 
-class _BudgetPageState extends State<BudgetPage> {
+class _TodoPageState extends State<TodoPage> {
   final _registerFormKey = GlobalKey<FormState>();
-  String selectedCategory = 'Food';
+  String selectedCategory = 'Todo';
+  String selectedStatus = 'High';
+  DateTime? dueDate;
   final _notesTitle = TextEditingController();
 
   final _focusTitle = FocusNode();
@@ -29,7 +31,7 @@ class _BudgetPageState extends State<BudgetPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'CREATE YOUR BUDGET NOTES !',
+                  'CREATE YOUR TO DO NOTES !',
                   style: GoogleFonts.lato(
                       color: Colors.black,
                       fontSize: 25,
@@ -52,14 +54,29 @@ class _BudgetPageState extends State<BudgetPage> {
                         )),
                   ),
                 ),
-                const SizedBox(height: 39),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.only(left: 50, right: 96),
                   child: TextFormField(
-                    keyboardType: TextInputType.text,
+                    onTap: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      ).then((pickedDate) {
+                        if (pickedDate != null && pickedDate != dueDate) {
+                          setState(() {
+                            dueDate = pickedDate;
+                          });
+                        }
+                      });
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.calendar_today),
-                        hintText: 'Date Create',
+                        hintText: dueDate != null
+                            ? "${dueDate!.toLocal()}".split(' ')[0]
+                            : "Select Date",
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
@@ -67,7 +84,37 @@ class _BudgetPageState extends State<BudgetPage> {
                         )),
                   ),
                 ),
-                const SizedBox(height: 39),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 96),
+                  child: TextFormField(
+                    onTap: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      ).then((pickedDate) {
+                        if (pickedDate != null && pickedDate != dueDate) {
+                          setState(() {
+                            dueDate = pickedDate;
+                          });
+                        }
+                      });
+                    },
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.timelapse),
+                        hintText: dueDate != null
+                            ? "${dueDate!.toLocal()}".split(' ')[0]
+                            : "Select Date",
+                        hintStyle: GoogleFonts.inter(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w200,
+                        )),
+                  ),
+                ),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.only(left: 50, right: 96),
                   child: TextFormField(
@@ -97,7 +144,35 @@ class _BudgetPageState extends State<BudgetPage> {
                         )),
                   ),
                 ),
-                const SizedBox(height: 39),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 96),
+                  child: DropdownButtonFormField(
+                    value: selectedStatus,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedStatus = value!;
+                      });
+                    },
+                    items: <String>['High', 'low', 'lowbanget']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.safety_check),
+                      hintText: 'Priority',
+                      hintStyle: GoogleFonts.inter(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w200,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.only(left: 50, right: 96),
                   child: DropdownButtonFormField(
@@ -107,7 +182,7 @@ class _BudgetPageState extends State<BudgetPage> {
                         selectedCategory = value!;
                       });
                     },
-                    items: <String>['Food', 'Bensin', 'Lainnya']
+                    items: <String>['Todo', 'Doing', 'Done']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -115,8 +190,8 @@ class _BudgetPageState extends State<BudgetPage> {
                       );
                     }).toList(),
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.category),
-                      hintText: 'Category',
+                      prefixIcon: Icon(Icons.safety_check),
+                      hintText: 'Status',
                       hintStyle: GoogleFonts.inter(
                         color: Colors.black,
                         fontSize: 12,

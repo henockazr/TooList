@@ -126,7 +126,9 @@ class _HomePageState extends State<HomePage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                   ),
-                  onPressed: () async {},
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_todo');
+                  },
                   child: Row(
                     children: [
                       Text(
@@ -149,7 +151,9 @@ class _HomePageState extends State<HomePage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                   ),
-                  onPressed: () async {},
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_budget');
+                  },
                   child: Row(
                     children: [
                       Text(

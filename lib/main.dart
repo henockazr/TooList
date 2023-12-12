@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:toolist/screens/Todo/todo_add.dart';
 import 'package:toolist/screens/budget/budget_add_page.dart';
 
 import '/screens/start_screen/landing_page.dart';
@@ -31,11 +32,13 @@ class TooList extends StatelessWidget {
             primarySwatch: primary,
             buttonTheme: const ButtonThemeData(
                 buttonColor: Colors.white, hoverColor: Colors.grey)),
-        home: const BudgetPage(),
+        home: const LandingPage(),
         routes: {
           'landing_page': (context) => const LandingPage(),
           'signup_page': (context) => const SignUpPage(),
           'login_page': (context) => const LoginPage(),
+          'add_budget': (context) => const BudgetPage(),
+          'add_todo': (context) => const TodoPage(),
         });
   }
 }
