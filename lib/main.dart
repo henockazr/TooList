@@ -32,7 +32,7 @@ class TooList extends StatelessWidget {
             primarySwatch: primary,
             buttonTheme: const ButtonThemeData(
                 buttonColor: Colors.white, hoverColor: Colors.grey)),
-        home: const LandingPage(),
+        home: const SplashScreen(),
         routes: {
           'landing_page': (context) => const LandingPage(),
           'signup_page': (context) => const SignUpPage(),

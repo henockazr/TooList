@@ -14,7 +14,7 @@ class _BudgetPageState extends State<BudgetPage> {
   final _notesTitle = TextEditingController();
 
   final _focusTitle = FocusNode();
-
+  DateTime? dueDate;
   bool _isVisible = true;
 
   @override
@@ -48,7 +48,7 @@ class _BudgetPageState extends State<BudgetPage> {
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 14,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -56,14 +56,29 @@ class _BudgetPageState extends State<BudgetPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 50, right: 96),
                   child: TextFormField(
-                    keyboardType: TextInputType.text,
+                    onTap: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      ).then((pickedDate) {
+                        if (pickedDate != null && pickedDate != dueDate) {
+                          setState(() {
+                            dueDate = pickedDate;
+                          });
+                        }
+                      });
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.calendar_today),
-                        hintText: 'Date Create',
+                        hintText: dueDate != null
+                            ? "${dueDate!.toLocal()}".split(' ')[0]
+                            : "Date Create",
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -78,7 +93,7 @@ class _BudgetPageState extends State<BudgetPage> {
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -93,7 +108,7 @@ class _BudgetPageState extends State<BudgetPage> {
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -120,7 +135,7 @@ class _BudgetPageState extends State<BudgetPage> {
                       hintStyle: GoogleFonts.inter(
                         color: Colors.black,
                         fontSize: 12,
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),

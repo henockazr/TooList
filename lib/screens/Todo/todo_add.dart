@@ -13,6 +13,7 @@ class _TodoPageState extends State<TodoPage> {
   String selectedCategory = 'Todo';
   String selectedStatus = 'High';
   DateTime? dueDate;
+  DateTime? deadline;
   final _notesTitle = TextEditingController();
 
   final _focusTitle = FocusNode();
@@ -80,7 +81,7 @@ class _TodoPageState extends State<TodoPage> {
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -95,22 +96,22 @@ class _TodoPageState extends State<TodoPage> {
                         firstDate: DateTime.now(),
                         lastDate: DateTime(2101),
                       ).then((pickedDate) {
-                        if (pickedDate != null && pickedDate != dueDate) {
+                        if (pickedDate != null && pickedDate != deadline) {
                           setState(() {
-                            dueDate = pickedDate;
+                            deadline = pickedDate;
                           });
                         }
                       });
                     },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.timelapse),
-                        hintText: dueDate != null
-                            ? "${dueDate!.toLocal()}".split(' ')[0]
-                            : "Select Date",
+                        hintText: deadline != null
+                            ? "${deadline!.toLocal()}".split(' ')[0]
+                            : "Deadline",
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -125,7 +126,7 @@ class _TodoPageState extends State<TodoPage> {
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -140,7 +141,7 @@ class _TodoPageState extends State<TodoPage> {
                         hintStyle: GoogleFonts.inter(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w400,
                         )),
                   ),
                 ),
@@ -167,7 +168,7 @@ class _TodoPageState extends State<TodoPage> {
                       hintStyle: GoogleFonts.inter(
                         color: Colors.black,
                         fontSize: 12,
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
@@ -195,7 +196,7 @@ class _TodoPageState extends State<TodoPage> {
                       hintStyle: GoogleFonts.inter(
                         color: Colors.black,
                         fontSize: 12,
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
