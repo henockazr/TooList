@@ -212,12 +212,22 @@ class _TodoPageState extends State<TodoPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                       fixedSize: const Size(130, 40)),
-                  child: Text(
-                    'Create',
-                    style: GoogleFonts.lato(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Create',
+                        style: GoogleFonts.lato(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Icon(
+                        Icons.check,
                         color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed('signup_page');
