@@ -9,6 +9,16 @@ class BudgetListPage extends StatefulWidget {
 }
 
 class _BudgetListPageState extends State<BudgetListPage> {
+  final _registerFormKey = GlobalKey<FormState>();
+
+  final _fullName = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  final _focusName = FocusNode();
+  final _focusEmail = FocusNode();
+  final _focusPassword = FocusNode();
+
   bool _isVisible = true;
 
   @override
