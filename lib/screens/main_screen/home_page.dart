@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,6 +14,8 @@ class _HomePageState extends State<HomePage> {
   List todo = [];
   List search_data = [];
   List search_data_pre = [];
+
+  ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -223,27 +226,173 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 17),
-              Card(
-                elevation: 0,
-                child: Column(
+              Container(
+                height: 200,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 8,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildCarouselCard(
+                        'Tugas Akhir ISB - 311',
+                        'Milestone $index / Sprint $index tugas akhir ISB - 311',
+                      );
+                    }),
+              ),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Budget Tracker',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Implement functionality for the "More" button
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'More ',
+                          style: GoogleFonts.lato(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Icon(
+                          Icons.arrow_forward,
+                          size: 15,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Container(
+                height: 200,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 8,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildCarouselCard(
+                        'Daily Expenses',
+                        'Pengeluaran ke - $index pada minggu ke - $index',
+                      );
+                    }),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCarouselCard(String title, String description) {
+    return Container(
+      width: 400,
+      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Card(
+        child: SizedBox(
+          width: 400,
+          height: 175,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                child: Row(
                   children: [
                     Text(
-                      'TITLE',
-                      style: GoogleFonts.montserrat(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black),
-                    ),
-                    Text(
-                      'Desciption will be right here : Lorem ipsum dolor sit amet',
+                      title,
                       style: GoogleFonts.lato(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
-                    )
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
-              )
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        description,
+                        style: GoogleFonts.lato(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildBudgetlCard(String title, String description) {
+    return Container(
+      width: 400,
+      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Card(
+        child: SizedBox(
+          width: 400,
+          height: 175,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                child: Row(
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.lato(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        description,
+                        style: GoogleFonts.lato(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

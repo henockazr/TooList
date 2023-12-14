@@ -31,11 +31,12 @@ class _ProfilePageState extends State<ProfilePage> {
   //   }
   // }
 
-  // @override
-  // void initState() {
-  //   _currentUser = widget.user;
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    //_currentUser = widget.user;
+    _currentUser = FirebaseAuth.instance.currentUser!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
