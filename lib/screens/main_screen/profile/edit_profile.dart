@@ -53,112 +53,99 @@ class _EditProfileState extends State<EditProfile> {
                 GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600)),
         backgroundColor: const Color(0xFFEAF2FF),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Profile',
-              style:
-                  GoogleFonts.roboto(fontSize: 28, fontWeight: FontWeight.w400),
-            ),
-            const SizedBox(height: 48),
-            const CircleAvatar(
-              backgroundColor: Colors.black,
-              radius: 60,
-              // backgroundImage: NetworkImage(_currentUser.photoURL!),
-            ),
-            const SizedBox(height: 35),
-            const Divider(
-              color: Colors.black,
-              indent: 24,
-              endIndent: 24,
-            ),
-            const SizedBox(height: 78),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 36),
-                      child: Text(
-                        'Name',
-                        style: GoogleFonts.lato(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
+      body: Column(
+        children: <Widget>[
+          Text(
+            'Profile',
+            style:
+                GoogleFonts.roboto(fontSize: 28, fontWeight: FontWeight.w400),
+          ),
+          const SizedBox(height: 48),
+          // const CircleAvatar(
+          //   backgroundColor: Colors.black,
+          //   radius: 60,
+          //   // backgroundImage: NetworkImage(_currentUser.photoURL!),
+          // ),
+          const SizedBox(height: 35),
+          const Divider(
+            color: Colors.black,
+            indent: 24,
+            endIndent: 24,
+          ),
+          const SizedBox(height: 78),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Name',
+                    style: GoogleFonts.lato(
+                        fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Rendy Panglila',
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: '${_currentUser.displayName}',
-                      ),
-                      style: GoogleFonts.lato(
-                          fontSize: 16, fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 40),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 36),
-                      child: Text(
-                        'Email',
-                        style: GoogleFonts.lato(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: '${_currentUser.email}',
-                      ),
-                      style: GoogleFonts.lato(
-                          fontSize: 16, fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 78),
-            const Divider(
-              color: Colors.black,
-              indent: 24,
-              endIndent: 24,
-            ),
-            const SizedBox(height: 43),
-            _isSigningOut
-                ? const CircularProgressIndicator(color: Colors.black)
-                : Container(
-                    padding: const EdgeInsets.only(left: 160, right: 160),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            side: const BorderSide(
-                              width: 2,
-                              color: Color(0xFF000000),
-                            ),
-                            backgroundColor:
-                                const Color.fromRGBO(255, 255, 255, 1),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            fixedSize: const Size(200, 40)),
-                        onPressed: () async {
-                          FireAuth.updateAccount(
-                              name: _fullName.text,
-                              image: image,
-                              email: _email.text);
-
-                          Navigator.pop(context, true);
-                        },
-                        child: Text(
-                          'Save',
-                          style: GoogleFonts.inter(
-                              color: const Color(0xFF000000),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600),
-                        )),
+                    style: GoogleFonts.lato(
+                        fontSize: 16, fontWeight: FontWeight.w500),
                   )
-          ],
-        ),
+                ],
+              ),
+              const SizedBox(height: 40),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 36),
+                    child: Text(
+                      'Email',
+                      style: GoogleFonts.lato(
+                          fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'rendy@gmial.com',
+                    ),
+                    style: GoogleFonts.lato(
+                        fontSize: 16, fontWeight: FontWeight.w500),
+                  )
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 78),
+          const Divider(
+            color: Colors.black,
+            indent: 24,
+            endIndent: 24,
+          ),
+          const SizedBox(height: 43),
+          Container(
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  side: const BorderSide(
+                    width: 2,
+                    color: Color(0xFF000000),
+                  ),
+                  backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: () async {
+                  FireAuth.updateAccount(
+                      name: _fullName.text, image: image, email: _email.text);
+
+                  Navigator.pop(context, true);
+                },
+                child: Text(
+                  'Save',
+                  style: GoogleFonts.inter(
+                      color: const Color(0xFF000000),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600),
+                )),
+          )
+        ],
       ),
     );
   }
