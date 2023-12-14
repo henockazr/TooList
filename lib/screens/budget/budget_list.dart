@@ -79,7 +79,7 @@ class _BudgetListPageState extends State<BudgetListPage> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.category),
+                              Icon(Icons.task, color: Colors.blue),
                               SizedBox(width: 6),
                               Text('Lunch at Cafetaria'),
                             ],
@@ -88,9 +88,29 @@ class _BudgetListPageState extends State<BudgetListPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Rp. 25,000'),
-                              Text('Food'),
-                              Text('25 November 2023'),
+                              Text(
+                                'Rp. 25,000',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Food',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '25 November 2023',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ],
                           )
                         ],
@@ -115,7 +135,7 @@ class _BudgetListPageState extends State<BudgetListPage> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.category),
+                              Icon(Icons.task, color: Colors.blue),
                               SizedBox(width: 6),
                               Text('Lunch at Cafetaria'),
                             ],
@@ -124,9 +144,29 @@ class _BudgetListPageState extends State<BudgetListPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Rp. 25,000'),
-                              Text('Food'),
-                              Text('25 November 2023'),
+                              Text(
+                                'Rp. 25,000',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Food',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '25 November 2023',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ],
                           )
                         ],
@@ -151,7 +191,7 @@ class _BudgetListPageState extends State<BudgetListPage> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.category),
+                              Icon(Icons.task, color: Colors.blue),
                               SizedBox(width: 6),
                               Text('Lunch at Cafetaria'),
                             ],
@@ -160,9 +200,141 @@ class _BudgetListPageState extends State<BudgetListPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Rp. 25,000'),
-                              Text('Food'),
-                              Text('25 November 2023'),
+                              Text(
+                                'Rp. 25,000',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Food',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '22 November 2023',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 0,
+                  shape: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () {
+                      debugPrint('Card tapped.');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.task, color: Colors.blue),
+                              SizedBox(width: 6),
+                              Text('Lunch at Cafetaria'),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Rp. 25,000',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Food',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '25 November 2023',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 0,
+                  shape: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () {
+                      debugPrint('Card tapped.');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.task, color: Colors.blue),
+                              SizedBox(width: 6),
+                              Text('Lunch at Cafetaria'),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Rp. 25,000',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Food',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '25 November 2023',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ],
                           )
                         ],

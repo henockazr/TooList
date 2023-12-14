@@ -144,26 +144,18 @@ class _HomePageState extends State<HomePage> {
                       height: 0,
                     ),
                   ),
-                  const SizedBox(height: 9),
-                  Text('Saturday, 25 November 2023',
-                      style: GoogleFonts.lato(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        height: 0,
-                      )),
-                ],
-              ),
-              SizedBox(height: 23),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(18),
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.black,
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_todo');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'New To Do',
+                        style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+
                       ),
                       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                       shape: RoundedRectangleBorder(
@@ -183,12 +175,17 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(18),
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.black,
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_budget');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'New Expenses',
+                        style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
                       ),
                       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                       shape: RoundedRectangleBorder(
