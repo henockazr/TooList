@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:toolist/utils/config.dart';
+import 'package:toolist/utils/models/budget_model.dart';
+import 'package:toolist/utils/models/todo_model.dart';
+import 'package:toolist/utils/restapi.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,10 +15,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DataService ds = DataService();
+
   List data = [];
-  List todo = [];
-  List search_data = [];
-  List search_data_pre = [];
+  List<ToDoListModel> toDo = [];
+  List<BudgetTrackerListModel> budget = [];
+
+  selectAllToDo() async {
+    data =
+        jsonDecode(await ds.selectAll(token, project, 'manajemen_aset', appid));
+
+    toDo = data.map((e) => ToDoListModel.fromJson(e)).toList();
+
+    //Refresh the UI
+    setState(() {
+      toDo = toDo;
+    });
+  }
+
+  @override
+  void initState() {
+    selectAllToDo();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,26 +249,43 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 17),
-              Card(
-                elevation: 0,
-                child: Column(
-                  children: [
-                    Text(
-                      'TITLE',
-                      style: GoogleFonts.montserrat(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black),
-                    ),
-                    Text(
-                      'Desciption will be right here : Lorem ipsum dolor sit amet',
-                      style: GoogleFonts.lato(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
-                    )
-                  ],
-                ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: ListView.builder(
+                    itemCount: toDo.length,
+                    itemBuilder: (context, index) {
+                      final toDoItem = toDo[index];
+                      return Card(
+                        elevation: 0,
+                        child: Column(
+                          children: [
+                            Text(
+                              toDoItem.title,
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.black),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              toDoItem.description,
+                              style: GoogleFonts.lato(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              toDoItem.deadline,
+                              style: GoogleFonts.lato(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
               )
             ],
           ),
