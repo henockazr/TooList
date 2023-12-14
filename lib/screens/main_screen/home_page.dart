@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
+import 'package:toolist/utils/config.dart';
+import 'package:toolist/utils/models/budget_model.dart';
+import 'package:toolist/utils/models/todo_model.dart';
+import 'package:toolist/utils/restapi.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,10 +15,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DataService ds = DataService();
+
   List data = [];
-  List todo = [];
-  List search_data = [];
-  List search_data_pre = [];
+  List<ToDoListModel> toDo = [];
+  List<BudgetTrackerListModel> budget = [];
+
+  selectAllToDo() async {
+    data =
+        jsonDecode(await ds.selectAll(token, project, 'manajemen_aset', appid));
+
+    toDo = data.map((e) => ToDoListModel.fromJson(e)).toList();
+
+    //Refresh the UI
+    setState(() {
+      toDo = toDo;
+    });
+  }
+
+  @override
+  void initState() {
+    selectAllToDo();
+
+    super.initState();
+  }
 
   ScrollController _controller = ScrollController();
 
@@ -121,26 +146,18 @@ class _HomePageState extends State<HomePage> {
                       height: 0,
                     ),
                   ),
-                  const SizedBox(height: 9),
-                  Text('Saturday, 25 November 2023',
-                      style: GoogleFonts.lato(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        height: 0,
-                      )),
-                ],
-              ),
-              SizedBox(height: 23),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(18),
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.black,
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_todo');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'New To Do',
+                        style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+
                       ),
                       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                       shape: RoundedRectangleBorder(
@@ -160,12 +177,17 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(18),
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.black,
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_budget');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'New Expenses',
+                        style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
                       ),
                       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                       shape: RoundedRectangleBorder(

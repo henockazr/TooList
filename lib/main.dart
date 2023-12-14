@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:toolist/screens/Todo/todo_add.dart';
 import 'package:toolist/screens/budget/budget_add_page.dart';
 import 'package:toolist/screens/budget/budget_list.dart';
 import 'package:toolist/screens/main_screen/profile/edit_profile.dart';
@@ -40,8 +41,9 @@ class TooList extends StatelessWidget {
           'landing_page': (context) => const LandingPage(),
           'signup_page': (context) => const SignUpPage(),
           'login_page': (context) => const LoginPage(),
-          //'budget_list': (context) => const BudgetList()
-          //'edit_profile': (context) => const EditProfile()
+          'add_budget': (context) => const BudgetPage(),
+          'add_todo': (context) => const TodoPage(),
+          'list_budget': (context) => const BudgetListPage(),
         });
   }
 }
