@@ -21,9 +21,7 @@ class _LandingPageState extends State<LandingPage> {
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (BuildContext context) => Dashboard(
-            user: user,
-          ),
+          builder: (BuildContext context) => Dashboard(user: user),
         ),
       );
     }

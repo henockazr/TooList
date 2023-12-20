@@ -1,23 +1,26 @@
-class BudgetTrackerListModel {
+class BudgetListModel {
   final String id;
-  final String title;
+  final String title_budget;
+  final String date_budget;
   final String amount;
-  final String desription;
+  final String desc;
   final String category;
 
-  BudgetTrackerListModel(
+  BudgetListModel(
       {required this.id,
-      required this.title,
+      required this.title_budget,
+      required this.date_budget,
       required this.amount,
-      required this.desription,
+      required this.desc,
       required this.category});
 
-  factory BudgetTrackerListModel.fromJson(Map<String, dynamic> data) {
-    return BudgetTrackerListModel(
+  factory BudgetListModel.fromJson(Map data) {
+    return BudgetListModel(
         id: data['_id'],
-        title: data['title'],
+        title_budget: data['title_budget'],
+        date_budget: data['date_budget'],
         amount: data['amount'],
-        desription: data['desription'],
+        desc: data['desc'],
         category: data['category']);
   }
 }

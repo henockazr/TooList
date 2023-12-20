@@ -5,25 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:toolist/utils/config.dart';
-import 'package:toolist/utils/models/budget_model.dart';
+import 'package:toolist/utils/models/todo_model.dart';
 import 'package:toolist/utils/restapi.dart';
 
-class BudgetAddPage extends StatefulWidget {
-  const BudgetAddPage({super.key});
+class TodoAddPage extends StatefulWidget {
+  const TodoAddPage({super.key});
 
   @override
-  _BudgetAddPageState createState() => _BudgetAddPageState();
+  _TodoAddPageState createState() => _TodoAddPageState();
 }
 
-class _BudgetAddPageState extends State<BudgetAddPage> {
+class _TodoAddPageState extends State<TodoAddPage> {
   final title = TextEditingController();
-  final amount = TextEditingController();
-  final date = TextEditingController();
   final description = TextEditingController();
-  String category = 'Personal';
+  final date = TextEditingController();
+  final deadline = TextEditingController();
+  String status = 'To Do';
+  String priority = 'Medium';
 
   DataService ds = DataService();
-
   late Future<DateTime?> selectedDate;
 
   @override
@@ -46,7 +46,7 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Create Your Budget Notes !',
+                  'Create Your To Do Notes !',
                   style: GoogleFonts.lato(
                       color: Colors.black,
                       fontSize: 25,
@@ -78,21 +78,19 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
                     ),
                     const SizedBox(width: 33),
                     Flexible(
-                      child: TextField(
+                      child: TextFormField(
                         controller: date,
-                        keyboardType: TextInputType.datetime,
-                        maxLines: 1,
+                        onTap: () {
+                          dialogDate(context);
+                        },
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Expenses's Date...",
+                            hintText: "To Do's Date...",
                             hintStyle: GoogleFonts.inter(
                               color: Colors.grey,
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                             )),
-                        onTap: () {
-                          showDialogPicker(context);
-                        },
                       ),
                     ),
                   ],
@@ -100,21 +98,23 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
                 const SizedBox(height: 15),
                 Row(
                   children: [
-                    const Icon(Icons.attach_money),
+                    const Icon(Icons.alarm),
                     const SizedBox(width: 19),
                     Text(
-                      'Amount',
+                      'Due Date',
                       style: GoogleFonts.inter(
                           fontSize: 12, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(width: 58),
+                    const SizedBox(width: 50),
                     Flexible(
                       child: TextFormField(
-                        controller: amount,
-                        keyboardType: TextInputType.number,
+                        controller: deadline,
+                        onTap: () {
+                          dialogDeadline(context);
+                        },
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Input Your Expenses...',
+                            hintText: "The Deadline...",
                             hintStyle: GoogleFonts.inter(
                               color: Colors.grey,
                               fontSize: 16,
@@ -154,29 +154,24 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
                 const SizedBox(height: 15),
                 Row(
                   children: [
-                    const Icon(Icons.category),
+                    const Icon(Icons.priority_high),
                     const SizedBox(width: 19),
                     Text(
-                      'Category',
+                      'Priority',
                       style: GoogleFonts.inter(
                           fontSize: 12, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(width: 51),
+                    const SizedBox(width: 62),
                     Flexible(
                       child: DropdownButtonFormField(
-                        value: category,
+                        value: priority,
                         onChanged: (String? value) {
                           setState(() {
-                            category = value!;
+                            priority = value!;
                           });
                         },
-                        items: <String>[
-                          'Hobbies',
-                          'Personal',
-                          'Food & Bev',
-                          'Transportation',
-                          'Other'
-                        ].map<DropdownMenuItem<String>>((String value) {
+                        items: <String>['High', 'Medium', 'Low']
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -184,7 +179,44 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
                         }).toList(),
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Category',
+                          hintStyle: GoogleFonts.inter(
+                            color: Colors.grey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    const Icon(Icons.my_library_books),
+                    const SizedBox(width: 19),
+                    Text(
+                      'Status',
+                      style: GoogleFonts.inter(
+                          fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 69),
+                    Flexible(
+                      child: DropdownButtonFormField(
+                        value: status,
+                        onChanged: (String? value) {
+                          setState(() {
+                            status = value!;
+                          });
+                        },
+                        items: <String>['To Do', 'Doing', 'Done']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
                           hintStyle: GoogleFonts.inter(
                             color: Colors.grey,
                             fontSize: 16,
@@ -225,22 +257,22 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
                     ],
                   ),
                   onPressed: () async {
-                    List response = jsonDecode(await ds.insertBudgetList(
+                    List respone = jsonDecode(await ds.insertToDoList(
                         appid,
                         title.text,
-                        amount.text,
+                        date.text,
+                        deadline.text,
                         description.text,
-                        category,
-                        date.text));
-                    List<BudgetListModel> budget = response
-                        .map((e) => BudgetListModel.fromJson(e))
-                        .toList();
+                        priority,
+                        status));
+                    List<ToDoListModel> todo =
+                        respone.map((e) => ToDoListModel.fromJson(e)).toList();
 
-                    if (budget.length == 1) {
+                    if (todo.length == 1) {
                       Navigator.pop(context, true);
                     } else {
                       if (kDebugMode) {
-                        print(response);
+                        print(respone);
                       }
                     }
                   },
@@ -253,7 +285,7 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
     );
   }
 
-  void showDialogPicker(BuildContext context) {
+  void dialogDate(BuildContext context) {
     var tanggal = DateTime.now();
 
     selectedDate = showDatePicker(
@@ -276,6 +308,37 @@ class _BudgetAddPageState extends State<BudgetAddPage> {
         final DateFormat formatter = DateFormat.yMMMMd('en_US');
         final String formattedDate = formatter.format(value);
         date.text = formattedDate;
+      });
+    }, onError: (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    });
+  }
+
+  void dialogDeadline(BuildContext context) {
+    var tanggal = DateTime.now();
+
+    selectedDate = showDatePicker(
+      context: context,
+      initialDate: DateTime(tanggal.year, tanggal.month, tanggal.day),
+      firstDate: DateTime(1980),
+      lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child!,
+        );
+      },
+    );
+
+    selectedDate.then((value) {
+      setState(() {
+        if (value == null) return;
+
+        final DateFormat formatter = DateFormat.yMMMMd('en_US');
+        final String formattedDate = formatter.format(value);
+        deadline.text = formattedDate;
       });
     }, onError: (error) {
       if (kDebugMode) {

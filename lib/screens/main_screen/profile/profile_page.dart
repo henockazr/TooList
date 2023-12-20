@@ -31,11 +31,11 @@ class _ProfilePageState extends State<ProfilePage> {
   //   }
   // }
 
-  // @override
-  // void initState() {
-  //   _currentUser = widget.user;
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    _currentUser = FirebaseAuth.instance.currentUser!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,34 +51,44 @@ class _ProfilePageState extends State<ProfilePage> {
                   GoogleFonts.roboto(fontSize: 28, fontWeight: FontWeight.w400),
             ),
             const SizedBox(height: 48),
-            const CircleAvatar(
-              backgroundColor: Colors.black,
-              radius: 60,
-              // backgroundImage: NetworkImage(_currentUser.photoURL!),
-            ),
+            _currentUser.photoURL ==
+                    'https://drive.google.com/file/d/1nLtNU3MfMUsjgaPKUXJ-r8uNX8If2Kvz/view?usp=sharing'
+                ? const CircleAvatar(
+                    backgroundColor: Colors.black,
+                    radius: 60,
+                  )
+                : CircleAvatar(
+                    backgroundImage: NetworkImage('${_currentUser.photoURL}'),
+                    radius: 60,
+                  ),
             const SizedBox(height: 5),
-            Padding(
-              padding: const EdgeInsets.only(right: 36),
-              child: TextButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Edit',
-                      style: GoogleFonts.lato(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(),
+                  TextButton(
+                    child: Row(
+                      children: [
+                        Text(
+                          'Edit',
+                          style: GoogleFonts.lato(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(width: 5),
+                        const Icon(Icons.arrow_forward,
+                            size: 15, color: Colors.black)
+                      ],
                     ),
-                    const SizedBox(width: 10),
-                    const Icon(Icons.arrow_forward,
-                        size: 15, color: Colors.black)
-                  ],
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => EditProfile(user: _currentUser)));
-                },
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const EditProfile()));
+                    },
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 10),
@@ -88,52 +98,51 @@ class _ProfilePageState extends State<ProfilePage> {
               endIndent: 24,
             ),
             const SizedBox(height: 78),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 36),
-                      child: Text(
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
                         'Name',
                         style: GoogleFonts.lato(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 270),
-                      child: Text(
-                        'Randy Panglila',
-                        // '${_currentUser.displayName}',
-                        style: GoogleFonts.lato(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 40),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 36),
-                      child: Text(
+                      _currentUser.displayName == null
+                          ? Text(
+                              'Please Insert Display Name',
+                              style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.red),
+                            )
+                          : Text(
+                              '${_currentUser.displayName}',
+                              style: GoogleFonts.lato(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            )
+                    ],
+                  ),
+                  const SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
                         'Email',
                         style: GoogleFonts.lato(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 200),
-                      child: Text(
-                        'randypanglila@gmail.com',
-                        // '${_currentUser.email}',
+                      Text(
+                        '${_currentUser.email}',
                         style: GoogleFonts.lato(
                             fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                    )
-                  ],
-                ),
-              ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 78),
             const Divider(
@@ -152,23 +161,75 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: 2,
                               color: Color(0xFFEA4335),
                             ),
-                            backgroundColor:
-                                const Color.fromRGBO(255, 255, 255, 1),
+                            surfaceTintColor: Colors.white,
+                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12)),
                             fixedSize: const Size(200, 40)),
                         onPressed: () async {
-                          setState(() {
-                            _isSigningOut = true;
-                          });
-                          await FirebaseAuth.instance.signOut();
-                          setState(() {
-                            _isSigningOut = false;
-                          });
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const LandingPage(),
-                            ),
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                surfaceTintColor: Colors.white,
+                                title: const Text("WARNING"),
+                                content:
+                                    const Text("Are you sure want to log out?"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      //Close Dialog
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Cancel",
+                                      style: GoogleFonts.inter(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        side: const BorderSide(
+                                          width: 2,
+                                          color: Colors.red,
+                                        ),
+                                        backgroundColor: Colors.white,
+                                        surfaceTintColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12))),
+                                    onPressed: () async {
+                                      setState(() {
+                                        _isSigningOut = true;
+                                      });
+                                      await FirebaseAuth.instance.signOut();
+                                      setState(() {
+                                        _isSigningOut = false;
+                                      });
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LandingPage(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      "Log Out",
+                                      style: GoogleFonts.inter(
+                                        color: Colors.red,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
                         child: Text(

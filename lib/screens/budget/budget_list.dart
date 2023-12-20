@@ -1,36 +1,58 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:toolist/utils/config.dart';
+import 'package:toolist/utils/models/budget_model.dart';
+import 'package:toolist/utils/restapi.dart';
 
 class BudgetListPage extends StatefulWidget {
-  const BudgetListPage({super.key});
+  const BudgetListPage({Key? key}) : super(key: key);
 
   @override
-  _BudgetListPageState createState() => _BudgetListPageState();
+  BudgetListPageState createState() => BudgetListPageState();
 }
 
-class _BudgetListPageState extends State<BudgetListPage> {
-  final _registerFormKey = GlobalKey<FormState>();
+class BudgetListPageState extends State<BudgetListPage> {
+  DataService ds = DataService();
 
-  final _fullName = TextEditingController();
-  final _email = TextEditingController();
-  final _password = TextEditingController();
+  List dataBudget = [];
+  List<BudgetListModel> budget = [];
 
-  final _focusName = FocusNode();
-  final _focusEmail = FocusNode();
-  final _focusPassword = FocusNode();
+  selectAllAset() async {
+    dataBudget =
+        jsonDecode(await ds.selectAll(token, project, budgetList, appid));
 
-  bool _isVisible = true;
+    budget = dataBudget.map((e) => BudgetListModel.fromJson(e)).toList();
+
+    //Refresh the UI
+    setState(() {
+      budget = budget;
+    });
+  }
+
+  Future reloadDataAset(dynamic value) async {
+    setState(() {
+      selectAllAset();
+    });
+  }
+
+  @override
+  void initState() {
+    selectAllAset();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Center(
           child: Container(
-            // color: Colors.amber,
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.8,
+            padding: const EdgeInsets.all(40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,142 +60,102 @@ class _BudgetListPageState extends State<BudgetListPage> {
                   'Budget Tracker',
                   style: GoogleFonts.lato(
                       color: Colors.black,
-                      fontSize: 25,
+                      fontSize: 24,
                       fontWeight: FontWeight.w700),
-                  textAlign:
-                      TextAlign.left, // Mengatur teks menjadi di sebelah kiri
                 ),
                 const SizedBox(height: 13),
                 Text(
                   'This Week',
                   style: GoogleFonts.lato(
                       color: Colors.black,
-                      fontSize: 15,
+                      fontSize: 18,
                       fontWeight: FontWeight.w700),
-                  textAlign:
-                      TextAlign.left, // Mengatur teks menjadi di sebelah kiri
                 ),
                 Text(
                   'Rp. 222.000.00',
                   style: GoogleFonts.lato(
                       color: Colors.black,
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w400),
                   textAlign:
                       TextAlign.left, // Mengatur teks menjadi di sebelah kiri
                 ),
                 const SizedBox(height: 30),
-                Card(
-                  elevation: 0,
-                  shape: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  color: Colors.white,
-                  child: InkWell(
-                    onTap: () {
-                      debugPrint('Card tapped.');
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.585,
+                  child: ListView.builder(
+                    itemCount: budget.length,
+                    itemBuilder: (context, index) {
+                      final item = budget[index];
+                      return Container(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: InkWell(
+                            child: budgetListCard(item.title_budget,
+                                item.amount, item.category, item.date_budget),
+                            onTap: () {
+                              Navigator.pushNamed(context, 'budget_edit',
+                                  arguments: [item.id]).then(reloadDataAset);
+                            }),
+                      );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.category),
-                              SizedBox(width: 6),
-                              Text('Lunch at Cafetaria'),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Rp. 25,000'),
-                              Text('Food'),
-                              Text('25 November 2023'),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Card(
-                  elevation: 0,
-                  shape: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  color: Colors.white,
-                  child: InkWell(
-                    onTap: () {
-                      debugPrint('Card tapped.');
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.category),
-                              SizedBox(width: 6),
-                              Text('Lunch at Cafetaria'),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Rp. 25,000'),
-                              Text('Food'),
-                              Text('25 November 2023'),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Card(
-                  elevation: 0,
-                  shape: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  color: Colors.white,
-                  child: InkWell(
-                    onTap: () {
-                      debugPrint('Card tapped.');
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.category),
-                              SizedBox(width: 6),
-                              Text('Lunch at Cafetaria'),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Rp. 25,000'),
-                              Text('Food'),
-                              Text('25 November 2023'),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget budgetListCard(
+      String title, String amount, String category, String date) {
+    return Card(
+      elevation: 0,
+      shape: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.black)),
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.task, color: Colors.black),
+                const SizedBox(width: 6),
+                Text(
+                  title,
+                  style: GoogleFonts.inter(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Rp $amount',
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  category,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  date,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

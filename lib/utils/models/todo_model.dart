@@ -16,7 +16,7 @@ class ToDoListModel {
       required this.priority,
       required this.status});
 
-  factory ToDoListModel.fromJson(Map<String, dynamic> data) {
+  factory ToDoListModel.fromJson(Map data) {
     return ToDoListModel(
         id: data['_id'],
         title: data['title'],

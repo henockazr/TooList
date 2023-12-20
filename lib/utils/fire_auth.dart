@@ -68,15 +68,21 @@ class FireAuth {
       required String image,
       required String email}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    User? updatedUser;
-    updatedUser = auth.currentUser;
+    User? user;
 
-    await updatedUser!.updatePhotoURL(image);
-    await updatedUser.updateEmail(image);
-    await updatedUser.updateDisplayName(image);
-    await updatedUser.reload();
+    try {
+      user = auth.currentUser;
+      await user!.updatePhotoURL(image);
+      await user.updateEmail(email);
+      await user.updateDisplayName(name);
+      await user.reload();
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
 
-    return updatedUser;
+    return user;
   }
 
   static Future<User?> refreshUser(User user) async {

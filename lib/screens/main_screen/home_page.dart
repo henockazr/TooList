@@ -1,7 +1,10 @@
 import 'dart:convert';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:toolist/screens/todo/todo_add.dart';
+import 'package:toolist/screens/budget/budget_add_page.dart';
 import 'package:toolist/utils/config.dart';
 import 'package:toolist/utils/models/budget_model.dart';
 import 'package:toolist/utils/models/todo_model.dart';
@@ -15,44 +18,74 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late User _currentUser;
   DataService ds = DataService();
+  DateTime now = DateTime.now();
 
-  List data = [];
-  List<ToDoListModel> toDo = [];
-  List<BudgetTrackerListModel> budget = [];
+  List dataBudget = [];
+  List dataToDo = [];
+  int totalExpenses = 0;
+  int totalToDo = 0;
+  List<ToDoListModel> todoFiltered = [];
+  List<BudgetListModel> budgetFiltered = [];
 
-  selectAllToDo() async {
-    data =
-        jsonDecode(await ds.selectAll(token, project, 'manajemen_aset', appid));
+  selectToDoFiltered() async {
+    dataToDo = jsonDecode(await ds.selectWhere(
+        token, project, toDoList, appid, 'status', 'To Do'));
 
-    toDo = data.map((e) => ToDoListModel.fromJson(e)).toList();
+    todoFiltered = dataToDo.map((e) => ToDoListModel.fromJson(e)).toList();
+
+    setState(() {
+      todoFiltered = todoFiltered;
+    });
+  }
+
+  selectBudgetFiltered() async {
+    String formattedDate = DateFormat.yMMMMd('en_US').format(now);
+
+    dataBudget = jsonDecode(await ds.selectWhere(
+        token, project, budgetList, appid, 'date_budget', formattedDate));
+
+    budgetFiltered =
+        dataBudget.map((e) => BudgetListModel.fromJson(e)).toList();
 
     //Refresh the UI
     setState(() {
-      toDo = toDo;
+      budgetFiltered = budgetFiltered;
+    });
+  }
+
+  Future reloadDataAset(dynamic value) async {
+    setState(() {
+      selectBudgetFiltered();
+      selectToDoFiltered();
     });
   }
 
   @override
   void initState() {
-    selectAllToDo();
-
+    selectBudgetFiltered();
+    selectToDoFiltered();
+    _currentUser = FirebaseAuth.instance.currentUser!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat.yMMMMEEEEd('en_US').format(now);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 50.0),
+          padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                margin: EdgeInsets.symmetric(vertical: 40.0),
-                padding: EdgeInsets.all(20.0),
+                margin: const EdgeInsets.symmetric(vertical: 40.0),
+                padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 2),
                   color: const Color(0xFFEAF2FF),
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -62,46 +95,53 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Halo, ',
+                        const Text(
+                          'Hi, ',
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 24,
                             fontWeight: FontWeight.w300,
                           ),
                         ),
-                        Text(
-                          'Rendy Panglila',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        )
+                        _currentUser.displayName == null
+                            ? const Text(
+                                'there !',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
+                            : Text(
+                                '${_currentUser.displayName}',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
                       ],
                     ),
-                    SizedBox(height: 19),
-                    Row(
+                    const SizedBox(height: 10),
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Total Expenses',
+                              'Today Expenses',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             Text(
                               'Rp 154.000',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
-                              ),
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                  fontStyle: FontStyle.italic),
                             ),
                           ],
                         ),
@@ -114,16 +154,16 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             Text(
                               '5 Task',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
-                              ),
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                  fontStyle: FontStyle.italic),
                             )
                           ],
                         )
@@ -133,43 +173,45 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Today's Task",
+                    "Have something to write?",
                     style: GoogleFonts.lato(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                    ),
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 9),
-                  Text('Saturday, 25 November 2023',
+                  Text(formattedDate,
                       style: GoogleFonts.lato(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        height: 0,
-                      )),
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400)),
                 ],
               ),
-              SizedBox(height: 23),
+              const SizedBox(height: 23),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(18),
+                      padding: const EdgeInsets.all(18),
                       side: const BorderSide(
                         width: 2,
                         color: Colors.black,
                       ),
-                      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                      surfaceTintColor: Colors.white,
+                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TodoAddPage()));
+                    },
                     child: Row(
                       children: [
                         Text(
@@ -185,17 +227,21 @@ class _HomePageState extends State<HomePage> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(18),
+                      padding: const EdgeInsets.all(18),
                       side: const BorderSide(
                         width: 2,
                         color: Colors.black,
                       ),
-                      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                      surfaceTintColor: Colors.white,
+                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                     ),
                     onPressed: () {
-                      // Implement logic for New Expenses button
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BudgetAddPage()));
                     },
                     child: Row(
                       children: [
@@ -212,21 +258,82 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'To Do List',
                     style: TextStyle(
                       fontSize: 15,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w800,
                       color: Colors.black,
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      // Implement functionality for the "More" button
+                    onPressed: () {},
+                    child: Row(
+                      children: [
+                        Text(
+                          'More ',
+                          style: GoogleFonts.lato(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 15,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              dataToDo.isEmpty
+                  ? const SizedBox(
+                      height: 150,
+                      child: Center(
+                          child: Text(
+                        'You have nothing do do :)',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      )),
+                    )
+                  : SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: todoFiltered.length,
+                          itemBuilder: (context, index) {
+                            final item = todoFiltered[index];
+                            return InkWell(
+                              borderRadius: BorderRadius.circular(30),
+                              child: buildToDoCard(
+                                  item.title, item.description, item.deadline),
+                              onTap: () {
+                                Navigator.pushNamed(context, 'todo_edit',
+                                    arguments: [item.id]).then(reloadDataAset);
+                              },
+                            );
+                          }),
+                    ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Budget Tracker',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      Navigator.of(context).pushNamed('list_budget');
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -238,7 +345,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 15,
                               fontWeight: FontWeight.w400),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_forward,
                           size: 15,
                           color: Colors.black,
@@ -248,45 +355,112 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 17),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: ListView.builder(
-                    itemCount: toDo.length,
-                    itemBuilder: (context, index) {
-                      final toDoItem = toDo[index];
-                      return Card(
-                        elevation: 0,
-                        child: Column(
-                          children: [
-                            Text(
-                              toDoItem.title,
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.black),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              toDoItem.description,
-                              style: GoogleFonts.lato(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              toDoItem.deadline,
-                              style: GoogleFonts.lato(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-              )
+              const SizedBox(height: 10),
+              dataBudget.isEmpty
+                  ? const SizedBox(
+                      height: 125,
+                      child: Center(
+                          child: Text(
+                        'You have no expenses for today ?',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      )),
+                    )
+                  : SizedBox(
+                      height: 125,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: budgetFiltered.length,
+                          itemBuilder: (context, index) {
+                            final item = budgetFiltered[index];
+                            return InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                child: budgetCard(item.title_budget,
+                                    item.amount, item.date_budget),
+                                onTap: () {
+                                  Navigator.pushNamed(context, 'budget_edit',
+                                          arguments: [item.id])
+                                      .then(reloadDataAset);
+                                });
+                          }),
+                    ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildToDoCard(String title, String description, String deadline) {
+    return SizedBox(
+      height: 150,
+      width: 220,
+      child: Card(
+        elevation: 0,
+        color: const Color(0xFFEAF2FF),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.montserrat(
+                    fontSize: 15, fontWeight: FontWeight.w700),
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                description,
+                style:
+                    GoogleFonts.lato(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                deadline,
+                style:
+                    GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget budgetCard(String title, String amount, String date) {
+    return SizedBox(
+      height: 125,
+      width: 205,
+      child: Card(
+        elevation: 0,
+        color: const Color(0xFFEAF2FF),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.montserrat(
+                    fontSize: 15, fontWeight: FontWeight.w700),
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Rp $amount',
+                style:
+                    GoogleFonts.lato(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                date,
+                style:
+                    GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.w500),
+              ),
             ],
           ),
         ),

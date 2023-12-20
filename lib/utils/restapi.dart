@@ -39,19 +39,20 @@ class DataService {
     }
   }
 
-  Future insertBudgetTrackerList(String appid, String title, String amount,
-      String desription, String category) async {
+  Future insertBudgetList(String appid, String title_budget, String date_budget,
+      String amount, String desc, String category) async {
     String uri = 'https://io.etter.cloud/v4/insert';
 
     try {
       final response = await http.post(Uri.parse(uri), body: {
         'token': '6539bce34cdd170fa853de68',
         'project': 'toolist',
-        'collection': 'budget_tracker_list',
+        'collection': 'budget_list',
         'appid': appid,
-        'title': title,
+        'title_budget': title_budget,
+        'date_budget': date_budget,
         'amount': amount,
-        'desription': desription,
+        'desc': desc,
         'category': category
       });
 
