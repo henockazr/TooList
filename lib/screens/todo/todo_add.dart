@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TodoAddPage extends StatefulWidget {
-  const TodoAddPage({super.key});
+class TodoPage extends StatefulWidget {
+  const TodoPage({super.key});
 
   @override
-  _TodoAddPageState createState() => _TodoAddPageState();
+  _TodoPageState createState() => _TodoPageState();
 }
 
-class _TodoAddPageState extends State<TodoAddPage> {
+class _TodoPageState extends State<TodoPage> {
   final _registerFormKey = GlobalKey<FormState>();
   String selectedCategory = 'Todo';
   String selectedStatus = 'High';
