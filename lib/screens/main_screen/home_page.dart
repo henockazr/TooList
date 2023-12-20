@@ -70,6 +70,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat.yMMMMEEEEd('en_US').format(now);
@@ -182,6 +184,7 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 20,
                         fontWeight: FontWeight.w800),
                   ),
+<<<<<<< HEAD
                   const SizedBox(height: 9),
                   Text(formattedDate,
                       style: GoogleFonts.lato(
@@ -200,6 +203,20 @@ class _HomePageState extends State<HomePage> {
                       side: const BorderSide(
                         width: 2,
                         color: Colors.black,
+=======
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_todo');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'New To Do',
+                        style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
                       ),
                       surfaceTintColor: Colors.white,
                       backgroundColor: Colors.white,
@@ -225,12 +242,26 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+<<<<<<< HEAD
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(18),
                       side: const BorderSide(
                         width: 2,
                         color: Colors.black,
+=======
+                  onPressed: () async {
+                    Navigator.of(context).pushNamed('add_budget');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'New Expenses',
+                        style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
                       ),
                       surfaceTintColor: Colors.white,
                       backgroundColor: Colors.white,
@@ -355,6 +386,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+<<<<<<< HEAD
               const SizedBox(height: 10),
               dataBudget.isEmpty
                   ? const SizedBox(
@@ -421,6 +453,69 @@ class _HomePageState extends State<HomePage> {
                 deadline,
                 style:
                     GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.w500),
+=======
+              SizedBox(height: 17),
+              Container(
+                height: 200,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 8,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildCarouselCard(
+                        'Tugas Akhir ISB - 311',
+                        'Milestone $index / Sprint $index tugas akhir ISB - 311',
+                      );
+                    }),
+              ),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Budget Tracker',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Implement functionality for the "More" button
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'More ',
+                          style: GoogleFonts.lato(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Icon(
+                          Icons.arrow_forward,
+                          size: 15,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Container(
+                height: 200,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 8,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildCarouselCard(
+                        'Daily Expenses',
+                        'Pengeluaran ke - $index pada minggu ke - $index',
+                      );
+                    }),
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
               ),
             ],
           ),
@@ -429,6 +524,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+<<<<<<< HEAD
   Widget budgetCard(String title, String amount, String date) {
     return SizedBox(
       height: 125,
@@ -460,6 +556,106 @@ class _HomePageState extends State<HomePage> {
                 date,
                 style:
                     GoogleFonts.lato(fontSize: 12, fontWeight: FontWeight.w500),
+=======
+  Widget buildCarouselCard(String title, String description) {
+    return Container(
+      width: 400,
+      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Card(
+        child: SizedBox(
+          width: 400,
+          height: 175,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                child: Row(
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.lato(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        description,
+                        style: GoogleFonts.lato(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildBudgetlCard(String title, String description) {
+    return Container(
+      width: 400,
+      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Card(
+        child: SizedBox(
+          width: 400,
+          height: 175,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                child: Row(
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.lato(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        description,
+                        style: GoogleFonts.lato(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
+                      ),
+                    ),
+                  ],
+                ),
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
               ),
             ],
           ),

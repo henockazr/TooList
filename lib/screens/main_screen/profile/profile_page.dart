@@ -33,6 +33,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
+<<<<<<< HEAD
+=======
+    //_currentUser = widget.user;
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
     _currentUser = FirebaseAuth.instance.currentUser!;
     super.initState();
   }

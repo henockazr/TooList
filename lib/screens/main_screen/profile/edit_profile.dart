@@ -57,7 +57,10 @@ class _EditProfileState extends State<EditProfile> {
         backgroundColor: const Color(0xFFEAF2FF),
       ),
       body: Column(
+<<<<<<< HEAD
         mainAxisAlignment: MainAxisAlignment.center,
+=======
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
         children: <Widget>[
           Text(
             'Profile',
@@ -65,6 +68,7 @@ class _EditProfileState extends State<EditProfile> {
                 GoogleFonts.roboto(fontSize: 28, fontWeight: FontWeight.w400),
           ),
           const SizedBox(height: 48),
+<<<<<<< HEAD
           _currentUser.photoURL == null
               ? const CircleAvatar(
                   backgroundColor: Colors.black,
@@ -74,6 +78,13 @@ class _EditProfileState extends State<EditProfile> {
                   backgroundImage: NetworkImage(image),
                   radius: 60,
                 ),
+=======
+          // const CircleAvatar(
+          //   backgroundColor: Colors.black,
+          //   radius: 60,
+          //   // backgroundImage: NetworkImage(_currentUser.photoURL!),
+          // ),
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
           const SizedBox(height: 35),
           const Divider(
             color: Colors.black,
@@ -83,6 +94,7 @@ class _EditProfileState extends State<EditProfile> {
           const SizedBox(height: 78),
           Column(
             children: [
+<<<<<<< HEAD
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Row(
@@ -133,6 +145,43 @@ class _EditProfileState extends State<EditProfile> {
                     )
                   ],
                 ),
+=======
+              Row(
+                children: [
+                  Text(
+                    'Name',
+                    style: GoogleFonts.lato(
+                        fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Rendy Panglila',
+                    ),
+                    style: GoogleFonts.lato(
+                        fontSize: 16, fontWeight: FontWeight.w500),
+                  )
+                ],
+              ),
+              const SizedBox(height: 40),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 36),
+                    child: Text(
+                      'Email',
+                      style: GoogleFonts.lato(
+                          fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'rendy@gmial.com',
+                    ),
+                    style: GoogleFonts.lato(
+                        fontSize: 16, fontWeight: FontWeight.w500),
+                  )
+                ],
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
               ),
             ],
           ),
@@ -143,6 +192,7 @@ class _EditProfileState extends State<EditProfile> {
             endIndent: 24,
           ),
           const SizedBox(height: 43),
+<<<<<<< HEAD
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -195,6 +245,32 @@ class _EditProfileState extends State<EditProfile> {
                         fontWeight: FontWeight.w600),
                   )),
             ],
+=======
+          Container(
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  side: const BorderSide(
+                    width: 2,
+                    color: Color(0xFF000000),
+                  ),
+                  backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: () async {
+                  FireAuth.updateAccount(
+                      name: _fullName.text, image: image, email: _email.text);
+
+                  Navigator.pop(context, true);
+                },
+                child: Text(
+                  'Save',
+                  style: GoogleFonts.inter(
+                      color: const Color(0xFF000000),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600),
+                )),
+>>>>>>> 0507a8d3521d4dbc2e7a670b395d5ec5c8166f7b
           )
         ],
       ),
